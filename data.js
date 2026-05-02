@@ -41,7 +41,7 @@ export const products = [
     {
         type: 'meat',
         name: 'Крылышки',
-        image: '.img/krilya.jpg'
+        image: 'img/krilya.jpg'
     },
     {
         type: 'meat',
