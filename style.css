@@ -78,8 +78,9 @@ a {
     justify-self: center;
     display:  block;
     position: relative;
-    top: -25px; 
-    margin-bottom: -30px;
+    transform: translateY(-20px); /* Вместо top + margin-bottom */
+    margin-bottom: -10px; /* Минимальная компенсация */
+
     width: 150px;
     height: 150px;
     border-radius: 1rem;
