@@ -8,7 +8,7 @@ export const products = [
     },
     {
         type: 'riba',
-        name: 'Мидий',
+        name: 'Мидии',
         image: 'img/midiy.jpg'
     },
     {
