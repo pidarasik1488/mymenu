@@ -136,6 +136,15 @@ a {
     opacity: 0; /* Начинаем с прозрачности */
     animation: fadeInScale 0.25s ease-out forwards !important;
 }
+.card.zoomed .card-img {
+    width: 220px;
+    height: 220px;
+    margin-top: 20px;
+}
+.card.zoomed .card-title {
+    font-size: 1.6rem;
+    margin-bottom: -20px;
+}
 
 /* Новая анимация без дерганья */
 @keyframes fadeInScale {
@@ -173,7 +182,7 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 75%);
     z-index: 999;
     cursor: pointer;
     transition: background-color 0.25s ease-out;
