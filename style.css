@@ -1,5 +1,7 @@
 * {
     color: white;
+    user-select: none; /* Запрещает выделение текста при клике */
+    -webkit-tap-highlight-color: transparent; /* Убирает серый фон при клике на мобильных */
 }
 body {
     background-color: rgb(12, 12, 12);
@@ -62,11 +64,14 @@ a {
     height: 42vw;
     margin: 0.2rem;
     
-    &:hover {
-        transform: scale(1.02);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
+    cursor: pointer;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    position: relative;
+    will-change: transform; /* Оптимизация производительности */
 }
+
+    
+
 .card-img-wrapper {
     display: flex;
     justify-content: center;
@@ -109,12 +114,12 @@ a {
     }
 }
 
-/* Увеличенная карточка для мобильных устройств */
+/* Увеличенная карточка */
 .card.zoomed {
     position: fixed !important;
     top: 50% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    transform: translate(-50%, -50%) scale(1) !important; /* Убираем scale из анимации */
     width: 85vw !important;
     max-width: 350px !important;
     height: auto !important;
@@ -128,80 +133,52 @@ a {
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
+    opacity: 0; /* Начинаем с прозрачности */
+    animation: fadeInScale 0.25s ease-out forwards !important;
 }
 
-/* Стили для контента внутри увеличенной карточки */
-.card.zoomed .card-img-wrapper {
-    margin-top: 0;
-    margin-bottom: 0;
+/* Новая анимация без дерганья */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }
 
-.card.zoomed .card-img {
-    width: 250px !important;
-    height: 250px !important;
-    transform: translateY(0) !important;
-    margin: 0 auto 10px auto !important;
+/* Обратная анимация при закрытии */
+.card.zoomed.closing {
+    animation: fadeOutScale 0.2s ease-out forwards !important;
+    pointer-events: none;
 }
 
-.card.zoomed .card-el {
-    margin-top: 10px;
+@keyframes fadeOutScale {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
 }
 
-.card.zoomed .card-title {
-    font-size: 1.8rem !important;
-    text-align: center;
-    margin: 10px 0;
-}
-
-/* Затемнение фона */
+/* Затемнение фона с плавным появлением */
 .zoom-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0, 0);
     z-index: 999;
     cursor: pointer;
+    transition: background-color 0.25s ease-out;
 }
 
-/* Анимация */
-@keyframes zoomIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-.card.zoomed {
-    animation: zoomIn 0.2s ease-out;
-}
-
-/* Для очень маленьких экранов */
-@media (max-width: 480px) {
-    .card.zoomed {
-        width: 90vw !important;
-        padding: 1rem !important;
-    }
-    
-    .card.zoomed .card-img {
-        width: 150px !important;
-        height: 150px !important;
-    }
-    
-    .card.zoomed .card-title {
-        font-size: 3rem !important;
-    }
-}
-
-/* Для экранов побольше (планшеты) */
-@media (min-width: 768px) {
-    .card.zoomed {
-        width: 60vw !important;
-        max-width: 500px !important;
-    }
+.zoom-overlay.active {
+    background-color: rgba(0, 0, 0, 0.9);
 }
